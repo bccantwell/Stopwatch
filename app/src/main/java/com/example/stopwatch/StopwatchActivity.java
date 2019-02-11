@@ -9,6 +9,10 @@ import android.os.Handler;
 import android.util.Log;
 import java.util.Locale;
 
+/*
+StopwatchActivity creates a stopwatch timer that can be started, paused, resumed, and stopped.
+ */
+
 public class StopwatchActivity extends Activity {
     private int seconds = 0;
     private boolean running;
@@ -18,6 +22,7 @@ public class StopwatchActivity extends Activity {
     private static final int SECS_PER_HOUR = SECS_PER_MIN * MINS_PER_HOUR;
     private static final int DELAY_MILLIS = 1000;
 
+    //Creates (or restores) an instance of the stopwatch activity using bundle values of "seconds" and "running"
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,21 +36,26 @@ public class StopwatchActivity extends Activity {
         Log.d("StopwatchActivity", "In onCreate");
     }
 
+    //Pause the stopwatch by moving the activity to the background
     @Override
     protected void onPause(){
         super.onPause();
         wasRunning = running;
         running = false;
+        Log.d("StopwatchActivity", "In onPause");
     }
 
+    //Resume the stopwatch by moving the activity to the foreground
     @Override
     protected void onResume(){
         super.onResume();
         if (wasRunning) {
             running = true;
         }
+        Log.d("StopwatchActivity", "In onResume");
     }
 
+    //Preserves the state of the stopwatch
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("seconds", seconds);
@@ -53,19 +63,23 @@ public class StopwatchActivity extends Activity {
         savedInstanceState.putBoolean("wasRunning", wasRunning);
     }
 
+    //When the start button is pushed, runs the stopwatch
     public void onClickStart(View view){
         running = true;
     }
 
+    //When the stop button is pushed, stops the stopwatch
     public void onClickStop(View view){
         running = false;
     }
 
+    //When the reset button is pushed, stops the stopwatch and sets the timer to 0
     public void onClickReset(View view){
         running = false;
         seconds = 0;
     }
 
+    //Sets the number of seconds to be displayed on the timer, and runs the timer
     private void runTimer() {
         final TextView timeView = (TextView) findViewById(R.id.time_view);
         final Handler handler = new Handler();
